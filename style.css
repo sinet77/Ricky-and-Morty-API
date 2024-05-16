@@ -1,0 +1,273 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.background {
+  background-color: hsl(0, 0%, 98%);
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.headline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  /* top and bottom + right and left /*/
+  background-color: hsl(0, 0%, 100%);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  color: hsl(200, 15%, 8%);
+}
+
+.head-title {
+  font-size: 25px;
+}
+
+.subline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 40px 50px 40px 0px; */
+  /* top ,right,bottom,left */
+}
+
+.house-title {
+  display: flex;
+  align-items: center;
+}
+
+.house {
+  margin-right: 50px;
+  cursor: pointer;
+  width: 50px;
+  /* Zmniejszy szerokość obrazka do 50% oryginalnej */
+  height: auto;
+}
+
+.country-bar {
+  padding: 15px;
+  width: 400px;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.country-bar::placeholder {
+  color: white;
+}
+
+.filter {
+  padding: 15px;
+  width: 160px;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.country-box {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.input-with-image {
+  padding-left: 70px;
+  background-image: url("loupe.png");
+  background-repeat: no-repeat;
+  background-position: 25px center;
+  background-size: 20px 20px;
+}
+
+.loupe-white {
+  padding-left: 70px;
+  background-image: url("loupe-white.png");
+  background-repeat: no-repeat;
+  background-position: 25px center;
+  background-size: 18px 20px;
+}
+
+.description {
+  padding: 20px;
+}
+
+#flag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.country-name {
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+#character-name {
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 45px;
+}
+
+.together {
+  margin-top: 20px;
+  line-height: 1.5;
+}
+
+.switch {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.back-button {
+  display: flex;
+  padding: 12px 25px;
+  width: 110px;
+  word-spacing: 10px;
+  font-weight: bold;
+  background-color: hsl(0, 0%, 100%);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 5px;
+  color: hsl(200, 15%, 8%);
+  cursor: pointer;
+}
+
+.country-click {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 50px;
+}
+
+.click-main {
+  align-items: center;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.first-column {
+  flex: 1;
+}
+
+.flag {
+  width: 100%;
+}
+
+.flagInside {
+  width: 70%;
+}
+
+.second-column {
+  flex: 1;
+  line-height: 35px;
+  margin-right: 100px;
+}
+
+#singleBorder {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.borderClass {
+  display: flex;
+  width: 130px;
+  margin-right: 10px;
+}
+
+.buttonBorder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 25px;
+  width: 130px;
+  word-spacing: 10px;
+  font-weight: bold;
+  font-size: 12px;
+  background-color: hsl(0, 0%, 100%);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 5px;
+  color: hsl(200, 15%, 8%);
+  cursor: pointer;
+  height: 38px;
+}
+
+.border {
+  display: flex;
+  margin-top: 50px;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.country-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 1400px) {
+  .main {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .country-box {
+    width: 300px;
+  }
+}
+@media (max-width: 800px) {
+  .click-main {
+    flex-direction: column;
+  }
+  .first-column {
+    display: flex;
+    justify-content: center;
+  }
+  .second-column {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 0px;
+  }
+  .main {
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+    align-items: center;
+    padding-left: 36px;
+  }
+  .filter {
+    padding: 15px 0px;
+  }
+  #country-name {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+}
