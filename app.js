@@ -1,32 +1,33 @@
 const app = document.querySelector(".background");
-const filterSelector = document.querySelector(".filter");
-const searchButton = document.getElementById("button"); // img lupki
-const characterInput = document.querySelector(".country-bar");
+const characterInput = document.querySelector(".character-bar");
 const main = document.querySelector(".main");
 const characterName = document.getElementById("character-name");
-const population = document.querySelector(".population");
-const region = document.querySelector(".region");
-const capital = document.querySelector(".capital");
-const switchButton = document.querySelector(".switch");
-const headline = document.querySelector(".headline");
 const backButton = document.querySelector(".back-button");
-const characterClick = document.querySelector(".country-click");
-const clickMain = document.querySelector(".click-main");
-const imageInsideCharacterBox = document.querySelector(".flagInside");
+const characterClick = document.querySelector(".character-click");
+const imageInsideCharacterBox = document.querySelector(
+  ".imageInsideCharacterBox"
+);
+const nextPageButton = document.querySelector(".next-page");
 
-async function fetchCharactersData() {
-  const response = await fetch("https://rickandmortyapi.com/api/character/");
+let nextPageUrl = "https://rickandmortyapi.com/api/character";
+
+async function fetchCharactersData(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return data;
+}
+
+async function fetchEpisodesData() {
+  const response = await fetch("https://rickandmortyapi.com/api/episode");
   const data = await response.json();
 
   return data.results;
 }
 
-fetchCharactersData();
-
-async function fetchOneCountryData(characterName) {
+async function fetchOneCharacterData(characterName) {
   const response = await fetch("https://rickandmortyapi.com/api/character");
   const data = await response.json();
-  console.log(data);
 
   const character = data.results.find(
     (character) => character.name.toLowerCase() === characterName.toLowerCase()
@@ -37,38 +38,34 @@ async function fetchOneCountryData(characterName) {
     alert("Wrong character");
   }
 }
-async function startCharacters() {
-  const characters = await fetchCharactersData();
+
+async function loadCharacters(url) {
+  const data = await fetchCharactersData(url);
+  nextPageUrl = data.info.next;
+
+  const characters = data.results;
+  main.innerHTML = "";
 
   characters.forEach((character) => {
     createCharacters(character);
   });
 }
 
-startCharacters();
+loadCharacters(nextPageUrl);
+// characterInput.addEventListener("keypress", async function (event) {
+//     if (event.key === "Enter") {}
 
 characterInput.addEventListener("input", async function (event) {
   const searchText = event.target.value.toLowerCase();
   console.log("searchText", searchText);
-  const data = await fetchCharactersData();
-  const filteredCharacters = data.filter((character) =>
+  const data = await fetchCharactersData(nextPageUrl);
+  const filteredCharacters = data.results.filter((character) =>
     character.name.toLowerCase().startsWith(searchText)
   );
   console.log("filteredCharacters", filteredCharacters);
   main.innerHTML = "";
   filteredCharacters.forEach(createCharacters);
 });
-
-// const homeButton = document.querySelector(".house");
-// homeButton.addEventListener("click", function () {
-//   main.classList.remove("hidden");
-//   countryClick.classList.add("hidden");
-//   main.innerHTML = "";
-//   let select = document.querySelector("select"); //filter reset
-//   select.selectedIndex = 0;
-
-//   startCountries();
-// });
 
 backButton.addEventListener("click", function () {
   app.classList.remove("hidden");
@@ -78,11 +75,11 @@ backButton.addEventListener("click", function () {
 
 function createCharacters(character) {
   const characterBox = document.createElement("div");
-  characterBox.classList.add("country-box");
+  characterBox.classList.add("character-box");
   main.appendChild(characterBox);
 
   const image = document.createElement("img");
-  image.classList.add("flag");
+  image.classList.add("image");
   image.src = character.image;
   characterBox.appendChild(image);
 
@@ -91,7 +88,7 @@ function createCharacters(character) {
   characterBox.appendChild(description);
 
   const characterName = document.createElement("div");
-  characterName.classList.add("country-name");
+  characterName.classList.add("character-name");
   characterName.textContent = character.name;
   description.appendChild(characterName);
 
@@ -105,54 +102,45 @@ function createCharacters(character) {
   together.appendChild(species);
 
   characterBox.addEventListener("click", async function () {
-    const data = await fetchOneCountryData(character.name);
-    clickOnTheCharacter(data);
+    const data = await fetchOneCharacterData(character.name);
+    const episodesData = await fetchEpisodesData();
+    clickOnTheCharacter(data, episodesData);
   });
 }
 
-async function clickOnTheCharacter(character) {
+async function clickOnTheCharacter(character, episodes) {
   main.classList.add("hidden");
   characterClick.classList.remove("hidden");
 
   characterName.textContent = character.name;
 
   imageInsideCharacterBox.src = character.image;
-  imageInsideCharacterBox.classList.add("flagInside");
+  imageInsideCharacterBox.classList.add("imageInsideCharacterBox");
 
-  const currentNativeName = document.getElementById("singleNativeName");
-  currentNativeName.textContent = country.nativeName;
+  const gender = document.getElementById("gender");
+  gender.textContent = character.gender;
 
-  const currentPopulation = document.getElementById("singlePopulation");
-  currentPopulation.textContent = country.population;
+  const location = document.getElementById("locationName");
+  location.textContent = character.location.name;
 
-  const currentRegion = document.getElementById("singleRegion");
-  currentRegion.textContent = country.region;
+  const status = document.getElementById("status");
+  status.textContent = character.status;
 
-  const currentSubRegion = document.getElementById("singleSubRegion");
-  currentSubRegion.textContent = country.subregion;
+  const episodeList = document.getElementById("episodeList");
+  episodeList.innerHTML = "";
 
-  const currentCapital = document.getElementById("singleCapital");
-  currentCapital.textContent = country.capital;
+  const characterEpisodes = episodes.filter((episode) =>
+    episode.characters.includes(
+      `https://rickandmortyapi.com/api/character/${character.id}`
+    )
+  );
 
-  const topLevelDomain = document.getElementById("singleDomain");
-  topLevelDomain.textContent = country.topLevelDomain;
-
-  const firstCurrency = document.getElementById("singleCurrencies");
-  const currencyArray = country.currencies;
-
-  currencyArray.forEach((currency) => {
-    const currencyName = currency.name;
-    firstCurrency.textContent = currencyName;
+  characterEpisodes.forEach((episode) => {
+    const episodeItem = document.createElement("li");
+    episodeItem.textContent = `${episode.episode}: ${episode.name}`;
+    episodeList.appendChild(episodeItem);
   });
-
-  const languages = document.getElementById("singleLanguages");
-  const languagesArray = country.languages.map((language) => language.name);
-  console.log(languagesArray);
-  const languagesText = languagesArray.join(", ");
-
-  languages.innerHTML = "";
-
-  const languagesElement = document.createElement("span");
-  languagesElement.textContent = languagesText;
-  languages.appendChild(languagesElement);
 }
+nextPageButton.addEventListener("click", function () {
+  loadCharacters(nextPageUrl);
+});
