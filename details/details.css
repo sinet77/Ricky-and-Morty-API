@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.back-button {
+  display: flex;
+  padding: 12px 25px;
+  width: 110px;
+  word-spacing: 10px;
+  font-weight: bold;
+  background-color: hsl(0, 0%, 100%);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 5px;
+  color: hsl(200, 15%, 8%);
+  cursor: pointer;
+}
+
+.character-click {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 50px;
+}
+
+.click-main {
+  align-items: center;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.first-column {
+  flex: 1;
+}
+
+.second-column {
+  flex: 1;
+  line-height: 35px;
+  margin-right: 100px;
+}
+
+.hidden {
+  display: none;
+}
+
+.character-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}

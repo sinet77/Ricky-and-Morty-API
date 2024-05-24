@@ -2,7 +2,6 @@ const app = document.querySelector(".background");
 const characterInput = document.querySelector(".character-bar");
 const main = document.querySelector(".main");
 const characterName = document.getElementById("character-name");
-const backButton = document.querySelector(".back-button");
 const characterClick = document.querySelector(".character-click");
 const imageInsideCharacterBox = document.querySelector(
   ".imageInsideCharacterBox"
@@ -11,32 +10,38 @@ const nextPageButton = document.querySelector(".next-page");
 
 let nextPageUrl = "https://rickandmortyapi.com/api/character";
 
-async function fetchCharactersData(url) {
+let currentPage = 1;
+let searchString = "";
+
+const setCurrentPage = (page) => {
+  currentPage = page;
+  loadCharacters();
+};
+async function fetchCharactersData() {
+  // !obsługa błędów
+  const url = "https://rickandmortyapi.com/api/character?page=" + currentPage;
+
+  if (searchString) {
+    url += "&name=" + searchString;
+  }
+
   const response = await fetch(url);
   const data = await response.json();
 
   return data;
 }
-
-async function fetchEpisodesData() {
+async function fetchEpisodeData() {
   const response = await fetch("https://rickandmortyapi.com/api/episode");
   const data = await response.json();
 
-  return data.results;
+  return data;
 }
 
-async function fetchOneCharacterData(characterName) {
-  const response = await fetch("https://rickandmortyapi.com/api/character");
-  const data = await response.json();
-
-  const character = data.results.find(
-    (character) => character.name.toLowerCase() === characterName.toLowerCase()
+async function fetchOneCharacterData(characterId) {
+  const response = await fetch(
+    "https://rickandmortyapi.com/api/character/" + characterId
   );
-  if (character) {
-    return character;
-  } else {
-    alert("Wrong character");
-  }
+  return await response.json();
 }
 
 async function loadCharacters(url) {
@@ -67,19 +72,15 @@ characterInput.addEventListener("input", async function (event) {
   filteredCharacters.forEach(createCharacters);
 });
 
-backButton.addEventListener("click", function () {
-  app.classList.remove("hidden");
-  characterClick.classList.add("hidden");
-  main.classList.remove("hidden");
-});
-
 function createCharacters(character) {
-  const characterBox = document.createElement("div");
+  const characterBox = document.createElement("a");
+  characterBox.href = "/details?id=" + character.id;
   characterBox.classList.add("character-box");
   main.appendChild(characterBox);
 
   const image = document.createElement("img");
   image.classList.add("image");
+  image.alt = "Image of a character";
   image.src = character.image;
   characterBox.appendChild(image);
 
@@ -102,7 +103,7 @@ function createCharacters(character) {
   together.appendChild(species);
 
   characterBox.addEventListener("click", async function () {
-    const data = await fetchOneCharacterData(character.name);
+    const data = await fetchOneCharacterData(character.id);
     const episodesData = await fetchEpisodesData();
     clickOnTheCharacter(data, episodesData);
   });
@@ -142,5 +143,5 @@ async function clickOnTheCharacter(character, episodes) {
   });
 }
 nextPageButton.addEventListener("click", function () {
-  loadCharacters(nextPageUrl);
+  setCurrentPage(currentPage + 1);
 });
