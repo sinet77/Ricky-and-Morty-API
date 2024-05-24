@@ -30,12 +30,6 @@ async function fetchCharactersData() {
 
   return data;
 }
-async function fetchEpisodeData() {
-  const response = await fetch("https://rickandmortyapi.com/api/episode");
-  const data = await response.json();
-
-  return data;
-}
 
 async function fetchOneCharacterData(characterId) {
   const response = await fetch(
@@ -101,47 +95,8 @@ function createCharacters(character) {
   species.classList.add("population");
   species.textContent = character.species;
   together.appendChild(species);
-
-  characterBox.addEventListener("click", async function () {
-    const data = await fetchOneCharacterData(character.id);
-    const episodesData = await fetchEpisodesData();
-    clickOnTheCharacter(data, episodesData);
-  });
 }
 
-async function clickOnTheCharacter(character, episodes) {
-  main.classList.add("hidden");
-  characterClick.classList.remove("hidden");
-
-  characterName.textContent = character.name;
-
-  imageInsideCharacterBox.src = character.image;
-  imageInsideCharacterBox.classList.add("imageInsideCharacterBox");
-
-  const gender = document.getElementById("gender");
-  gender.textContent = character.gender;
-
-  const location = document.getElementById("locationName");
-  location.textContent = character.location.name;
-
-  const status = document.getElementById("status");
-  status.textContent = character.status;
-
-  const episodeList = document.getElementById("episodeList");
-  episodeList.innerHTML = "";
-
-  const characterEpisodes = episodes.filter((episode) =>
-    episode.characters.includes(
-      `https://rickandmortyapi.com/api/character/${character.id}`
-    )
-  );
-
-  characterEpisodes.forEach((episode) => {
-    const episodeItem = document.createElement("li");
-    episodeItem.textContent = `${episode.episode}: ${episode.name}`;
-    episodeList.appendChild(episodeItem);
-  });
-}
 nextPageButton.addEventListener("click", function () {
   setCurrentPage(currentPage + 1);
 });
