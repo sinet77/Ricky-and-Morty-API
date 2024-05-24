@@ -1,7 +1,6 @@
 const search = new URLSearchParams(window.location.search);
 const backButton = document.querySelector(".back-button");
 const characterClick = document.querySelector(".character-click");
-const main = document.querySelector(".main");
 const app = document.querySelector(".background");
 const characterName = document.getElementById("character-name");
 
@@ -48,7 +47,7 @@ async function clickOnTheCharacter(character, episodes) {
   const episodeList = document.getElementById("episodeList");
   episodeList.innerHTML = "";
 
-  const characterEpisodes = episodes.filter((episode) =>
+  const characterEpisodes = episodes.results.filter((episode) =>
     episode.characters.includes(
       `https://rickandmortyapi.com/api/character/${character.id}`
     )
@@ -68,15 +67,14 @@ async function clickOnTheCharacter(character, episodes) {
 // });
 
 backButton.addEventListener("click", function () {
-  app.classList.remove("hidden");
-  characterClick.classList.add("hidden");
-  main.classList.remove("hidden");
+  window.location.href = "/index.html";
 });
 
 (async () => {
   const characterData = await fetchCharactersData();
   if (characterData) {
     const episodesData = await fetchEpisodesData();
+    console.log(episodesData);
     clickOnTheCharacter(characterData, episodesData);
   }
 })();

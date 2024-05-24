@@ -7,6 +7,7 @@ const imageInsideCharacterBox = document.querySelector(
   ".imageInsideCharacterBox"
 );
 const nextPageButton = document.querySelector(".next-page");
+const prevPageButton = document.querySelector(".prev-page");
 
 let nextPageUrl = "https://rickandmortyapi.com/api/character";
 
@@ -68,7 +69,7 @@ characterInput.addEventListener("input", async function (event) {
 
 function createCharacters(character) {
   const characterBox = document.createElement("a");
-  characterBox.href = "/details?id=" + character.id;
+  characterBox.href = "/details/?id=" + character.id;
   characterBox.classList.add("character-box");
   main.appendChild(characterBox);
 
@@ -99,4 +100,13 @@ function createCharacters(character) {
 
 nextPageButton.addEventListener("click", function () {
   setCurrentPage(currentPage + 1);
+  if (currentPage === 42) {
+    nextPageButton.style.display = "none";
+  }
+});
+prevPageButton.addEventListener("click", function () {
+  nextPageButton.style.display = "block";
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+  }
 });

@@ -45,6 +45,17 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
+.character-name {
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+#character-name {
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 45px;
+}
 .hidden {
   display: none;
 }
